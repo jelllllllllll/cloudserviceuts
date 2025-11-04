@@ -1,0 +1,35 @@
+version: "3.9"
+
+services:
+  backend:
+    build: ./backend
+    container_name: finsight-backend
+    ports:
+      - "5000:5000"
+    depends_on:
+      - mongo
+    networks:
+      - finsight-network
+
+  frontend:
+    build: ./frontend
+    container_name: finsight-frontend
+    ports:
+      - "3000:80"
+    depends_on:
+      - backend
+    networks:
+      - finsight-network
+
+  mongo:
+    image: mongo:6
+    container_name: finsight-mongo
+    restart: always
+    ports:
+      - "27017:27017"
+    networks:
+      - finsight-network
+
+networks:
+  finsight-network:
+    driver: bridge
